@@ -7,28 +7,22 @@ const client = new Client({
   port: 5432,
 });
 
+const cors = require('cors');
 const express = require("express");
 const app = express();
 
+app.use(cors());
 app.get("/", (req, res) => res.status(200).send("hello ae"));
 
-app.get("/postgres/connect", async (req, res) => {
+app.get("/postgres/query", async (req, res) => {
   try {
     await client.connect();
-    return res.status(200).send("Connected!");
-  } catch (error) {
-    console.log('error', error);
-    return res.status(200).send("Disconnected!");
-  }
-});
-
-app.get("/postgres/query", (req, res) => {
-  client.connect(async (err) => {
-    if (err) return res.status(200).send("Disconnected!");
-
     const data = await client.query("select * from users");
+    await client.end();
     return res.status(200).json(data.rows);
-  });
+  } catch (error) {
+    return res.status(500).send("Disconnected!");
+  }
 });
 
 app.listen(5001, () => console.log("server start"));

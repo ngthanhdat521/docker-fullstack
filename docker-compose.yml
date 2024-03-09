@@ -1,12 +1,20 @@
 version: '3.5'
 
 services:
+  reactjs_client:
+      build: client/test-app/.
+      ports:
+        - 3000:3000
+      networks:
+        custom_net:
+          ipv4_address: 10.5.0.2
+
   nodejs_server:
     build: server/.
     ports: 
       - 5001:5001
     networks:
-      base_network:
+      custom_net:
         ipv4_address: 10.5.0.3
 
   postgres:
@@ -21,7 +29,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      base_network:
+      custom_net:
         ipv4_address: 10.5.0.4
     restart: unless-stopped
   
@@ -38,12 +46,14 @@ services:
     ports:
       - 5050:80
     networks:
-      base_network:
+      custom_net:
         ipv4_address: 10.5.0.5
     restart: unless-stopped
 
 networks:
-  base_network:
+  postgres:
+    driver: bridge
+  custom_net:
     driver: bridge
     ipam:
       config:
