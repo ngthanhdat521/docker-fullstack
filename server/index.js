@@ -1,5 +1,5 @@
-const { Client } = require("pg");
-const client = new Client({
+const { Pool } = require("pg");
+const client = new Pool({
   user: "admin",
   host: "10.5.0.4",
   database: "postgres",
@@ -7,7 +7,7 @@ const client = new Client({
   port: 5432,
 });
 
-const cors = require('cors');
+const cors = require("cors");
 const express = require("express");
 const app = express();
 
@@ -16,11 +16,22 @@ app.get("/", (req, res) => res.status(200).send("hello ae"));
 
 app.get("/postgres/query", async (req, res) => {
   try {
-    await client.connect();
-    const data = await client.query("select * from users");
-    await client.end();
-    return res.status(200).json(data.rows);
+    client.connect((err, clientPool, done) => {
+      if (err) {
+        return res.status(500).send('error connection');
+      }
+      clientPool.query("select * from user", async (err, data) => {
+        done();
+        
+        if (err) {
+          return res.status(500).send('error data');
+        } else {
+          return res.status(200).json(data.rows);
+        }
+      });
+    });
   } catch (error) {
+    console.log("error db", error);
     return res.status(500).send("Disconnected!");
   }
 });
