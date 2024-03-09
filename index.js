@@ -1,6 +1,0 @@
-const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => res.status(200).send('hello ae'));
-
-app.listen(5001, () => console.log('server start'));
