@@ -1,18 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-import { useEffect } from 'react';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [data, setData] = useState([]);
+
   useEffect(() => {
-    fetch('http://localhost:5001/postgres/query').then((response) => response.json()).then((data) => console.log('data', data));
+    fetch("http://localhost:5001/postgres/query")
+      .then((response) => response.json())
+      .then((data) => setData(data));
   }, []);
+  
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <p>data backend : {JSON.stringify(data)}</p>
         <a
           className="App-link"
           href="https://reactjs.org"
