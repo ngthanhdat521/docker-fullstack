@@ -1,13 +1,13 @@
 version: '3.5'
 
 services:
-  # reactjs_client:
-  #     build: client/test-app/.
-  #     ports:
-  #       - 3000:3000
-  #     networks:
-  #       custom_net:
-  #         ipv4_address: 10.5.0.2
+  reactjs_client:
+      build: client/test-app/.
+      ports:
+        - 3000:3000
+      networks:
+        custom_net:
+          ipv4_address: 10.5.0.2
 
   nodejs_server:
     build: server/.
