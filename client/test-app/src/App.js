@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5001/postgres/query")
+    fetch("http://103.179.189.21:5001/postgres/query")
       .then((response) => response.json())
       .then((data) => setData(data));
   }, []);
